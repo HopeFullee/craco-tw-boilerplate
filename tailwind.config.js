@@ -1,8 +1,31 @@
 /** @type {import('tailwindcss').Config} */
-const px0_50 = { ...Array.from(Array(51)).map((_, i) => `${i}px`) };
-const px0_100 = { ...Array.from(Array(101)).map((_, i) => `${i}px`) };
-const px0_300 = { ...Array.from(Array(301)).map((_, i) => `${i}px`) };
-const px0_1920 = { ...Array.from(Array(1921)).map((_, i) => `${i}px`) };
+import plugin from 'tailwindcss/plugin';
+
+const px0_50 = { ...Array.from(Array(51)).map((_, i) => `${i}px`) } as Record<number, string>;
+const px0_100 = { ...Array.from(Array(101)).map((_, i) => `${i}px`) } as Record<number, string>;
+const px0_300 = { ...Array.from(Array(301)).map((_, i) => `${i}px`) } as Record<number, string>;
+const px0_1920 = { ...Array.from(Array(1921)).map((_, i) => `${i}px`) } as Record<number, string>;
+
+const customUtilities = plugin(({ addUtilities }) => {
+  addUtilities({
+    '.flex-center': {
+      display: 'flex',
+      'align-items': 'center',
+      'justify-content': 'center',
+    },
+    '.flex-col-center': {
+      display: 'flex',
+      'flex-direction': 'column',
+      'align-items': 'center',
+      'justify-content': 'center',
+    },
+  });
+});
+
+const customVariant = plugin(({ addVariant }) => {
+  addVariant('all', '& *');
+  addVariant('under', '& > *');
+});
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,tsx}"],
@@ -21,5 +44,8 @@ module.exports = {
       spacing: px0_300,
     },
   },
-  plugins: [],
+  plugins: [
+    customUtilities,
+    customVariant,
+  ],
 };
